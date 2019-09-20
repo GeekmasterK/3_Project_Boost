@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
-// TODO fix lighting bug
 public class Rocket : MonoBehaviour
 {
     [SerializeField] float rcsThrust = 100f;
@@ -9,6 +8,9 @@ public class Rocket : MonoBehaviour
 
     Rigidbody rigidBody;
     AudioSource audioSource;
+
+    enum State { Alive, Dying, Transcending }
+    State state = State.Alive;
 
     // Start is called before the first frame update
     void Start()
@@ -32,14 +34,19 @@ public class Rocket : MonoBehaviour
                 // do nothing
                 break;
             case "Finish":
-                print("Hit Finish"); // TODO remove
-                SceneManager.LoadScene(1);
+                state = State.Transcending;
+                Invoke("LoadNextScene", 1f); // parameterize time
                 break;
             default:
                 print("Dead");
                 SceneManager.LoadScene(0);
                 break;
         }
+    }
+
+    void LoadNextScene()
+    {
+        SceneManager.LoadScene(1); // TODO allow for more than 2 levels
     }
 
     private void Thrust()
