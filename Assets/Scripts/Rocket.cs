@@ -1,16 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
+// TODO fix lighting bug
 public class Rocket : MonoBehaviour
 {
-    Rigidbody rigidBody;
-
-    AudioSource audioSource;
-
     [SerializeField] float rcsThrust = 100f;
-
     [SerializeField] float mainThrust = 100f;
+
+    Rigidbody rigidBody;
+    AudioSource audioSource;
 
     // Start is called before the first frame update
     void Start()
@@ -31,11 +29,15 @@ public class Rocket : MonoBehaviour
         switch (collision.gameObject.tag)
         {
             case "Friendly":
-                print("OK"); // TODO remove
+                // do nothing
+                break;
+            case "Finish":
+                print("Hit Finish"); // TODO remove
+                SceneManager.LoadScene(1);
                 break;
             default:
                 print("Dead");
-                // TODO kill player
+                SceneManager.LoadScene(0);
                 break;
         }
     }
